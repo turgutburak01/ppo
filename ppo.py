@@ -74,7 +74,7 @@ def parse_args():
 
 def make_env(gym_id, seed, idx, capture_video, run_name):
     def thunk():
-        env = gym.make(gym_id)
+        env = gym.make(gym_id, render_mode='rgb_array')
         env = gym.wrappers.RecordEpisodeStatistics(env)
         if capture_video:
             if idx == 0:
@@ -260,7 +260,7 @@ if __name__ == "__main__":
                         # calculate approx_KL http://joschu.net/blog/kl-approx.html
                         old_approx_kl = (-log_ratio).mean()
                         approx_kl = ((ratio - 1) - log_ratio).mean()
-                        clip_fracs += [((ratio - 1.0).abs() > args.clip_coef).float().mean()]
+                        clip_fracs += [((ratio - 1.0).abs() > args.clip_coef).float().mean().item()]
                     
                     mb_advantages = b_advantages[mb_inds]
                     if args.norm_adv:
